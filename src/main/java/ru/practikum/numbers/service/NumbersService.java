@@ -12,7 +12,7 @@ public interface NumbersService {
 
     NumbersDTO update(NumbersDTO newNumbers);
 
-    Optional<NumbersDTO> findById(long id);
+    Optional<NumbersDTO> findById(Long id);
 
-    void deleteId(long id);
+    void deleteId(Long id);
 }

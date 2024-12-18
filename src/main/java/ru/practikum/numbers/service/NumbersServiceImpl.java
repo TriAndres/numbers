@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.practikum.numbers.dto.NumbersDTO;
 import ru.practikum.numbers.exception.DoesNotExistException;
 import ru.practikum.numbers.model.Numbers;
-import ru.practikum.numbers.repository.NumbersRepositoryImpl;
+import ru.practikum.numbers.repository.NumbersRepository;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,7 +18,7 @@ import static ru.practikum.numbers.mapper.NumbersMapper.*;
 @RequiredArgsConstructor
 @Slf4j
 public class NumbersServiceImpl implements NumbersService {
-    private final NumbersRepositoryImpl repository;
+    private final NumbersRepository repository;
 
     @Override
     public Collection<NumbersDTO> findAll() {
@@ -35,8 +35,8 @@ public class NumbersServiceImpl implements NumbersService {
 
     @Override
     public NumbersDTO update(NumbersDTO newNumbers) {
-        if (repository.findById(newNumbers.getId()).getId().equals(newNumbers.getId())) {
-            Numbers old = repository.findById(newNumbers.getId());
+        if (repository.findById(newNumbers.getId()).orElseThrow().getId().equals(newNumbers.getId())) {
+            Numbers old = repository.findById(newNumbers.getId()).orElseThrow();
             old.setNum(newNumbers.getNum());
             repository.save(old);
             log.info("Обновлено число с id={}.", old.getId());
@@ -47,24 +47,20 @@ public class NumbersServiceImpl implements NumbersService {
     }
 
     @Override
-    public Optional<NumbersDTO> findById(long id) {
-        if (repository.findAll().contains(repository.findById(id))) {
+    public Optional<NumbersDTO> findById(Long id) {
+        if (repository.findAll().contains(repository.findById(id).orElseThrow())) {
             log.info("Возврат по id={}", id);
-            return Optional.ofNullable(toDTO(repository.findById(id)));
+            return Optional.ofNullable(toDTO(repository.findById(id).orElseThrow()));
         }
         log.info("Число c id={} отсутствует", id);
         throw new DoesNotExistException("Число отсутствует.");
     }
 
     @Override
-    public void deleteId(long id) {
-        if (repository.findAll().contains(repository.findById(id))) {
-            repository.deleteById(id);
-            log.info("Удаление числа с id={}", id);
-        } else {
-            log.info("Число c id={} отсутствует", id);
-            throw new DoesNotExistException("Число отсутствует.");
-        }
+    public void deleteId(Long id) {
+        repository.deleteById(id);
+        log.info("Удаление числа с id={}", id);
+
     }
 
     private long getNextId() {

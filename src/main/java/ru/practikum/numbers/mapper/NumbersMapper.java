@@ -5,6 +5,7 @@ import ru.practikum.numbers.model.Numbers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class NumbersMapper {
     public static NumbersDTO toDTO(Numbers numbers) {
