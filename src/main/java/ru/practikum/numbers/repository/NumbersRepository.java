@@ -7,12 +7,4 @@ import ru.practikum.numbers.model.Numbers;
 import java.util.List;
 @Repository
 public interface NumbersRepository extends JpaRepository<Numbers, Long> {
-
-//    List<Numbers> findAll();
-//
-//    Numbers save(Numbers numbers);
-//
-//    Numbers findById(Long id);
-//
-//    void deleteById(Long id);
 }
