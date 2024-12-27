@@ -16,7 +16,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Documented
 @Constraint(validatedBy = NonNullValidator.class)
 public @interface NonNull {
-    String message() default "{NonNullValidation.invalid}";
+    String message() default "{NonNull.invalid}";
 
     Class<?>[] groups() default {};
 
